@@ -1,4 +1,6 @@
-
+====================
+	TUTORIALS
+====================
 *) How to add new board.
 	#) add a folder under boards:
 		./boards/freescale/MYBOARD/
