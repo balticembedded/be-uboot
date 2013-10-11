@@ -40,5 +40,42 @@
 	Some info
 ================
 
-By default imx u-boot booting variables are set to load kernel from first FAT partition, 
-where uImage should be resided.
+-The u-boot provides information for linux kernel about which board this is. And then kernel
+loads configuration according to that - there is no specific/different kernel for each board. 
+
+-By default imx u-boot booting variables are set to load kernel from first FAT partition, 
+where uImage should be resided, but this really depends on each devicd and u-boot version.
+
+=====================
+	Board specifics
+=====================
+-------------------------
+SABRE tablet
+-------------------------
+*) Config name
+	mx53smd
+	
+*) Specifics:
+	#) (NOTE) U-boot freescale 2013.04 for SMD has some strange behaviour - it doesnt send its revision
+	   number to linux kernel and thats why vpu encoder doesn't work. (solution is to use old u-boot or
+	   fixed/updated version)
+	#) By default 2013.04 u-boot SMD environment tries to boot from mmcpartition 2 and mount partition 3.
+	   These values need to be adjusted if partitions are layed out differently. In example:
+	   setenv mmcpart 1
+	   setenv mmcroot /dev/mmcblk0p2 rw
+	   
+
+-------------------------
+Baltic Embedded FIRST board
+-------------------------
+*) Config name
+	BE_mx53_first
+	
+*) Specifics:
+	#) Different RAM size.
+	#) SD connected to different pin, thats why returncode is inverted. ( Thats why cant boot on SABRE from sdcard)
+	#) Based on LOCO u-boot config, so kernel thinks this is LOCO board.
+
+
+
+
