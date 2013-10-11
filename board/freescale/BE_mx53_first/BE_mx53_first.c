@@ -519,7 +519,7 @@ int board_late_init(void)
 
 int checkboard(void)
 {
-	puts("Board: MX53 LOCO\n");
+	puts("Board: MX53 BalticEmbedded FIRST\n");
 
 	return 0;
 }
