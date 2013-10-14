@@ -41,7 +41,22 @@
 	$ sync
 	
 	
-	
+*) Create patch for Yocto build - we are using the original freescale repository and applying
+   our patches(boards) on to the freescale's source code. Because u-boot version and source code
+   is being updated we need to update patches too.
+   (The simplest solution is using diff and it does what it needs to be done. But in case there
+   is needed 'standard-patch' then format-patch should be used and that involves rebasing which
+   is cumbersome)
+   
+   #) Freescale's Yocto dylan branch uses u-boot version 2013.04, so if we need a patch for this
+      to work with dylan we need to create patch against this version.
+      ( patches-2013.04 ir original freescale branch, BE_v2013.04 is tag in BE be-patches branch,
+      which is based on patches-2013.04, so includes changed from that version till this tag.)
+      $ git diff patches-2013.04 BE_v2013.04 > patch
+      
+   #) The newest version will probably be HEAD/be-patches and patch can be applied similary, but
+      in this case from HEAD against the branch used in Yocto u-boot recipe.
+
 ================
 	Some info
 ================
