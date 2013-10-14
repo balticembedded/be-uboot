@@ -51,8 +51,6 @@
 #define CPDMA_RXCP_VER1		0x160
 #define CPDMA_RXCP_VER2		0x260
 
-#define CPDMA_RAM_ADDR		0x4a102000
-
 /* Descriptor mode bits */
 #define CPDMA_DESC_SOP		BIT(31)
 #define CPDMA_DESC_EOP		BIT(30)
@@ -109,7 +107,13 @@ struct cpsw_slave_regs {
 	u32	flow_thresh;
 	u32	port_vlan;
 	u32	tx_pri_map;
+#ifdef CONFIG_AM33XX
 	u32	gap_thresh;
+#elif defined(CONFIG_TI814X)
+	u32	ts_ctl;
+	u32	ts_seq_ltype;
+	u32	ts_vlan;
+#endif
 	u32	sa_lo;
 	u32	sa_hi;
 };
@@ -483,7 +487,7 @@ static inline void wait_for_idle(void)
 static int cpsw_mdio_read(struct mii_dev *bus, int phy_id,
 				int dev_addr, int phy_reg)
 {
-	unsigned short data;
+	int data;
 	u32 reg;
 
 	if (phy_reg & ~PHY_REG_MASK || phy_id & ~PHY_ID_MASK)
@@ -768,6 +772,7 @@ static int cpsw_init(struct eth_device *dev, bd_t *bis)
 
 	/* enable statistics collection only on the host port */
 	__raw_writel(BIT(priv->host_port), &priv->regs->stat_port_en);
+	__raw_writel(0x7, &priv->regs->stat_port_en);
 
 	cpsw_ale_port_state(priv, priv->host_port, ALE_PORT_STATE_FORWARD);
 
@@ -978,12 +983,12 @@ int cpsw_register(struct cpsw_platform_data *data)
 		return -ENOMEM;
 	}
 
-	priv->descs		= (void *)CPDMA_RAM_ADDR;
 	priv->host_port		= data->host_port_num;
 	priv->regs		= regs;
 	priv->host_port_regs	= regs + data->host_port_reg_ofs;
 	priv->dma_regs		= regs + data->cpdma_reg_ofs;
 	priv->ale_regs		= regs + data->ale_reg_ofs;
+	priv->descs		= (void *)regs + data->bd_ram_ofs;
 
 	int idx = 0;
 

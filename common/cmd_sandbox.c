@@ -1,20 +1,7 @@
 /*
  * Copyright (c) 2012, Google Inc.
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License as
- * published by the Free Software Foundation; either version 2 of
- * the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
- * MA 02111-1307 USA
+ * SPDX-License-Identifier:	GPL-2.0+
  */
 
 #include <common.h>
@@ -32,9 +19,16 @@ static int do_sandbox_ls(cmd_tbl_t *cmdtp, int flag, int argc,
 	return do_ls(cmdtp, flag, argc, argv, FS_TYPE_SANDBOX);
 }
 
+static int do_sandbox_save(cmd_tbl_t *cmdtp, int flag, int argc,
+			   char * const argv[])
+{
+	return do_save(cmdtp, flag, argc, argv, FS_TYPE_SANDBOX, 16);
+}
+
 static cmd_tbl_t cmd_sandbox_sub[] = {
-	U_BOOT_CMD_MKENT(load, 3, 0, do_sandbox_load, "", ""),
+	U_BOOT_CMD_MKENT(load, 7, 0, do_sandbox_load, "", ""),
 	U_BOOT_CMD_MKENT(ls, 3, 0, do_sandbox_ls, "", ""),
+	U_BOOT_CMD_MKENT(save, 6, 0, do_sandbox_save, "", ""),
 };
 
 static int do_sandbox(cmd_tbl_t *cmdtp, int flag, int argc,
@@ -56,8 +50,11 @@ static int do_sandbox(cmd_tbl_t *cmdtp, int flag, int argc,
 }
 
 U_BOOT_CMD(
-	sb,	6,	1,	do_sandbox,
+	sb,	8,	1,	do_sandbox,
 	"Miscellaneous sandbox commands",
-	"load host <addr> <filename> [<bytes> <offset>]  - load a file from host\n"
-	"sb ls host <filename>      - save a file to host"
+	"load host <dev> <addr> <filename> [<bytes> <offset>]  - "
+		"load a file from host\n"
+	"sb ls host <filename>                      - list files on host\n"
+	"sb save host <dev> <filename> <addr> <bytes> [<offset>] - "
+		"save a file to host\n"
 );

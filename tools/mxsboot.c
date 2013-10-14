@@ -4,23 +4,7 @@
  * Copyright (C) 2011 Marek Vasut <marek.vasut@gmail.com>
  * on behalf of DENX Software Engineering GmbH
  *
- * See file CREDITS for list of people who contributed to this
- * project.
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License as
- * published by the Free Software Foundation; either version 2 of
- * the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
- * MA 02111-1307 USA
+ * SPDX-License-Identifier:	GPL-2.0+
  */
 
 #include <fcntl.h>
@@ -44,14 +28,14 @@
  *
  * TWEAK this if you have different kind of NAND chip.
  */
-uint32_t nand_writesize = 2048;
-uint32_t nand_oobsize = 64;
-uint32_t nand_erasesize = 128 * 1024;
+static uint32_t nand_writesize = 2048;
+static uint32_t nand_oobsize = 64;
+static uint32_t nand_erasesize = 128 * 1024;
 
 /*
  * Sector on which the SigmaTel boot partition (0x53) starts.
  */
-uint32_t sd_sector = 2048;
+static uint32_t sd_sector = 2048;
 
 /*
  * Each of the U-Boot bootstreams is at maximum 1MB big.
@@ -450,7 +434,7 @@ static int mx28_nand_write_firmware(struct mx28_nand_fcb *fcb, int infd,
 	return 0;
 }
 
-void usage(void)
+static void usage(void)
 {
 	printf(
 		"Usage: mxsboot [ops] <type> <infile> <outfile>\n"
@@ -591,7 +575,7 @@ err0:
 	return ret;
 }
 
-int parse_ops(int argc, char **argv)
+static int parse_ops(int argc, char **argv)
 {
 	int i;
 	int tmp;

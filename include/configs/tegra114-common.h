@@ -18,6 +18,9 @@
 #define _TEGRA114_COMMON_H_
 #include "tegra-common.h"
 
+/* Cortex-A15 uses a cache line size of 64 bytes */
+#define CONFIG_SYS_CACHELINE_SIZE	64
+
 /*
  * NS16550 Configuration
  */
@@ -74,9 +77,10 @@
 #define CONFIG_SYS_SPL_MALLOC_START	0x80090000
 #define CONFIG_SPL_STACK		0x800ffffc
 
-#define CONFIG_SPL_LDSCRIPT		"$(CPUDIR)/tegra114/u-boot-spl.lds"
-
 /* Total I2C ports on Tegra114 */
 #define TEGRA_I2C_NUM_CONTROLLERS	5
+
+/* For USB EHCI controller */
+#define CONFIG_EHCI_IS_TDI
 
 #endif /* _TEGRA114_COMMON_H_ */

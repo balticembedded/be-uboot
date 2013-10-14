@@ -4,23 +4,7 @@
  * Copyright (C) 2011 Marek Vasut <marek.vasut@gmail.com>
  * on behalf of DENX Software Engineering GmbH
  *
- * See file CREDITS for list of people who contributed to this
- * project.
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License as
- * published by the Free Software Foundation; either version 2 of
- * the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
- * MA 02111-1307 USA
+ * SPDX-License-Identifier:	GPL-2.0+
  */
 
 #include <common.h>
@@ -52,7 +36,7 @@ static void mxs_power_clock2pll(void)
 			CLKCTRL_CLKSEQ_BYPASS_CPU);
 }
 
-static void mxs_power_clear_auto_restart(void)
+static void mxs_power_set_auto_restart(void)
 {
 	struct mxs_rtc_regs *rtc_regs =
 		(struct mxs_rtc_regs *)MXS_RTC_BASE;
@@ -65,10 +49,7 @@ static void mxs_power_clear_auto_restart(void)
 	while (readl(&rtc_regs->hw_rtc_ctrl) & RTC_CTRL_CLKGATE)
 		;
 
-	/*
-	 * Due to the hardware design bug of mx28 EVK-A
-	 * we need to set the AUTO_RESTART bit.
-	 */
+	/* Do nothing if flag already set */
 	if (readl(&rtc_regs->hw_rtc_persistent0) & RTC_PERSISTENT0_AUTO_RESTART)
 		return;
 
@@ -927,7 +908,7 @@ void mxs_power_init(void)
 	mxs_ungate_power();
 
 	mxs_power_clock2xtal();
-	mxs_power_clear_auto_restart();
+	mxs_power_set_auto_restart();
 	mxs_power_set_linreg();
 	mxs_power_setup_5v_detect();
 

@@ -7,23 +7,7 @@
  *
  * Sricharan R <r.sricharan@ti.com>
  *
- * See file CREDITS for list of people who contributed to this
- * project.
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License as
- * published by the Free Software Foundation; either version 2 of
- * the License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
- * MA 02111-1307 USA
+ * SPDX-License-Identifier:	GPL-2.0+
  */
 
 #include <asm/omap_common.h>
@@ -298,6 +282,7 @@ struct prcm_regs const omap5_es1_prcm = {
 	.cm_wkupaon_io_srcomp_clkctrl = 0x4ae07898,
 	.prm_rstctrl = 0x4ae07b00,
 	.prm_rstst = 0x4ae07b04,
+	.prm_rsttime = 0x4ae07b08,
 	.prm_vc_val_bypass = 0x4ae07ba0,
 	.prm_vc_cfg_i2c_mode = 0x4ae07bb4,
 	.prm_vc_cfg_i2c_clk = 0x4ae07bb8,
@@ -307,10 +292,16 @@ struct prcm_regs const omap5_es1_prcm = {
 	.prm_sldo_mpu_ctrl = 0x4ae07bd0,
 	.prm_sldo_mm_setup = 0x4ae07bd4,
 	.prm_sldo_mm_ctrl = 0x4ae07bd8,
+
+	/* SCRM stuff, used by some boards */
+	.scrm_auxclk0 = 0x4ae0a310,
+	.scrm_auxclk1 = 0x4ae0a314,
 };
 
 struct omap_sys_ctrl_regs const omap5_ctrl = {
 	.control_status				= 0x4A002134,
+	.control_std_fuse_opp_vdd_mpu_2		= 0x4A0021B4,
+	.control_padconf_core_base		= 0x4A002800,
 	.control_paconf_global			= 0x4A002DA0,
 	.control_paconf_mode			= 0x4A002DA4,
 	.control_smart1io_padconf_0		= 0x4A002DA8,
@@ -358,6 +349,8 @@ struct omap_sys_ctrl_regs const omap5_ctrl = {
 	.control_port_emif2_sdram_config	= 0x4AE0C118,
 	.control_emif1_sdram_config_ext		= 0x4AE0C144,
 	.control_emif2_sdram_config_ext		= 0x4AE0C148,
+	.control_wkup_ldovbb_mpu_voltage_ctrl	= 0x4AE0C318,
+	.control_padconf_wkup_base		= 0x4AE0C800,
 	.control_smart1nopmio_padconf_0		= 0x4AE0CDA0,
 	.control_smart1nopmio_padconf_1		= 0x4AE0CDA4,
 	.control_padconf_mode			= 0x4AE0CDA8,
@@ -385,6 +378,10 @@ struct omap_sys_ctrl_regs const omap5_ctrl = {
 
 struct omap_sys_ctrl_regs const dra7xx_ctrl = {
 	.control_status				= 0x4A002134,
+	.control_core_mac_id_0_lo		= 0x4A002514,
+	.control_core_mac_id_0_hi		= 0x4A002518,
+	.control_core_mac_id_1_lo		= 0x4A00251C,
+	.control_core_mac_id_1_hi		= 0x4A002520,
 	.control_core_mmr_lock1			= 0x4A002540,
 	.control_core_mmr_lock2			= 0x4A002544,
 	.control_core_mmr_lock3			= 0x4A002548,
@@ -434,6 +431,7 @@ struct omap_sys_ctrl_regs const dra7xx_ctrl = {
 	.control_srcomp_east_side		= 0x4A002E7C,
 	.control_srcomp_west_side		= 0x4A002E80,
 	.control_srcomp_code_latch		= 0x4A002E84,
+	.control_ddr_control_ext_0		= 0x4A002E88,
 	.control_padconf_core_base		= 0x4A003400,
 	.control_port_emif1_sdram_config	= 0x4AE0C110,
 	.control_port_emif1_lpddr2_nvm_config	= 0x4AE0C114,
@@ -709,6 +707,9 @@ struct prcm_regs const omap5_es2_prcm = {
 	.cm_l3init_fsusb_clkctrl = 0x4a0096d0,
 	.cm_l3init_ocp2scp1_clkctrl = 0x4a0096e0,
 
+	/* prm irqstatus regs */
+	.prm_irqstatus_mpu_2 = 0x4ae06014,
+
 	/* l4 wkup regs */
 	.cm_abe_pll_ref_clksel = 0x4ae0610c,
 	.cm_sys_clksel = 0x4ae06110,
@@ -729,6 +730,7 @@ struct prcm_regs const omap5_es2_prcm = {
 	.cm_wkupaon_io_srcomp_clkctrl = 0x4ae07998,
 	.prm_rstctrl = 0x4ae07c00,
 	.prm_rstst = 0x4ae07c04,
+	.prm_rsttime = 0x4ae07c08,
 	.prm_vc_val_bypass = 0x4ae07ca0,
 	.prm_vc_cfg_i2c_mode = 0x4ae07cb4,
 	.prm_vc_cfg_i2c_clk = 0x4ae07cb8,
@@ -739,6 +741,12 @@ struct prcm_regs const omap5_es2_prcm = {
 	.prm_sldo_mpu_ctrl = 0x4ae07cd0,
 	.prm_sldo_mm_setup = 0x4ae07cd4,
 	.prm_sldo_mm_ctrl = 0x4ae07cd8,
+	.prm_abbldo_mpu_setup = 0x4ae07cdc,
+	.prm_abbldo_mpu_ctrl = 0x4ae07ce0,
+
+	/* SCRM stuff, used by some boards */
+	.scrm_auxclk0 = 0x4ae0a310,
+	.scrm_auxclk1 = 0x4ae0a314,
 };
 
 struct prcm_regs const dra7xx_prcm = {
@@ -794,6 +802,7 @@ struct prcm_regs const dra7xx_prcm = {
 	.cm_ssc_deltamstep_dpll_ddrphy		= 0x4a00522c,
 	.cm_clkmode_dpll_dsp			= 0x4a005234,
 	.cm_shadow_freq_config1			= 0x4a005260,
+	.cm_clkmode_dpll_gmac			= 0x4a0052a8,
 
 	/* cm1.mpu */
 	.cm_mpu_mpu_clkctrl			= 0x4a005320,
@@ -891,6 +900,8 @@ struct prcm_regs const dra7xx_prcm = {
 	.cm_l3init_hsusbhost_clkctrl		= 0x4a009340,
 	.cm_l3init_hsusbotg_clkctrl		= 0x4a009348,
 	.cm_l3init_hsusbtll_clkctrl		= 0x4a009350,
+	.cm_gmac_clkstctrl			= 0x4a0093c0,
+	.cm_gmac_gmac_clkctrl			= 0x4a0093d0,
 	.cm_l3init_ocp2scp1_clkctrl		= 0x4a0093e0,
 
 	/* cm2.l4per */
@@ -940,6 +951,7 @@ struct prcm_regs const dra7xx_prcm = {
 	/* l4 wkup regs */
 	.cm_abe_pll_ref_clksel			= 0x4ae0610c,
 	.cm_sys_clksel				= 0x4ae06110,
+	.cm_abe_pll_sys_clksel			= 0x4ae06118,
 	.cm_wkup_clkstctrl			= 0x4ae07800,
 	.cm_wkup_l4wkup_clkctrl			= 0x4ae07820,
 	.cm_wkup_wdtimer1_clkctrl		= 0x4ae07828,
@@ -952,6 +964,7 @@ struct prcm_regs const dra7xx_prcm = {
 	.cm_wkupaon_scrm_clkctrl		= 0x4ae07890,
 	.prm_rstctrl				= 0x4ae07d00,
 	.prm_rstst				= 0x4ae07d04,
+	.prm_rsttime				= 0x4ae07d08,
 	.prm_vc_val_bypass			= 0x4ae07da0,
 	.prm_vc_cfg_i2c_mode			= 0x4ae07db4,
 	.prm_vc_cfg_i2c_clk			= 0x4ae07db8,

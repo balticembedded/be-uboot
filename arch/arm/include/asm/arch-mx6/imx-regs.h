@@ -1,19 +1,7 @@
 /*
  * Copyright (C) 2011 Freescale Semiconductor, Inc. All Rights Reserved.
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License along
- * with this program; if not, write to the Free Software Foundation, Inc.,
- * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ * SPDX-License-Identifier:	GPL-2.0+
  */
 
 #ifndef __ASM_ARCH_MX6_IMX_REGS_H__
@@ -45,6 +33,11 @@
 #define DTCP_ARB_BASE_ADDR              0x00138000
 #define DTCP_ARB_END_ADDR               0x0013BFFF
 #endif	/* CONFIG_MX6SL */
+
+#define MXS_APBH_BASE			APBH_DMA_ARB_BASE_ADDR
+#define MXS_GPMI_BASE			(APBH_DMA_ARB_BASE_ADDR + 0x02000)
+#define MXS_BCH_BASE			(APBH_DMA_ARB_BASE_ADDR + 0x04000)
+
 /* GPV - PL301 configuration ports */
 #ifdef CONFIG_MX6SL
 #define GPV2_BASE_ADDR                  0x00D00000
@@ -366,7 +359,7 @@ struct iomuxc {
 
 #define IOMUXC_GPR2_MODE_DISABLED	0
 #define IOMUXC_GPR2_MODE_ENABLED_DI0	1
-#define IOMUXC_GPR2_MODE_ENABLED_DI1	2
+#define IOMUXC_GPR2_MODE_ENABLED_DI1	3
 
 #define IOMUXC_GPR2_LVDS_CH1_MODE_OFFSET		2
 #define IOMUXC_GPR2_LVDS_CH1_MODE_MASK			(3<<IOMUXC_GPR2_LVDS_CH1_MODE_OFFSET)
@@ -433,7 +426,7 @@ struct cspi_regs {
 	ECSPI5_BASE_ADDR
 #endif
 
-struct iim_regs {
+struct ocotp_regs {
 	u32	ctrl;
 	u32	ctrl_set;
 	u32     ctrl_clr;
@@ -444,9 +437,9 @@ struct iim_regs {
 	u32     rsvd1[3];
 	u32     read_ctrl;
 	u32     rsvd2[3];
-	u32     fuse_data;
+	u32	read_fuse_data;
 	u32     rsvd3[3];
-	u32     sticky;
+	u32	sw_sticky;
 	u32     rsvd4[3];
 	u32     scs;
 	u32     scs_set;
@@ -461,7 +454,22 @@ struct iim_regs {
 
 	struct fuse_bank {
 		u32	fuse_regs[0x20];
-	} bank[15];
+	} bank[16];
+};
+
+struct fuse_bank0_regs {
+	u32	lock;
+	u32	rsvd0[3];
+	u32	uid_low;
+	u32	rsvd1[3];
+	u32	uid_high;
+	u32	rsvd2[3];
+	u32	rsvd3[4];
+	u32	rsvd4[4];
+	u32	rsvd5[4];
+	u32	cfg5;
+	u32	rsvd6[3];
+	u32	rsvd7[4];
 };
 
 struct fuse_bank4_regs {
@@ -472,7 +480,11 @@ struct fuse_bank4_regs {
 	u32	mac_addr_low;
 	u32     rsvd2[3];
 	u32     mac_addr_high;
-	u32	rsvd3[0x13];
+	u32	rsvd3[0xb];
+	u32	gp1;
+	u32	rsvd4[3];
+	u32	gp2;
+	u32	rsvd5[3];
 };
 
 struct aipstz_regs {
@@ -630,29 +642,12 @@ struct anatop_regs {
 	u32	digprog_sololite;	/* 0x280 */
 };
 
-#define ANATOP_PFD_480_PFD0_FRAC_SHIFT		0
-#define ANATOP_PFD_480_PFD0_FRAC_MASK		(0x3f<<ANATOP_PFD_480_PFD0_FRAC_SHIFT)
-#define ANATOP_PFD_480_PFD0_STABLE_SHIFT	6
-#define ANATOP_PFD_480_PFD0_STABLE_MASK		(1<<ANATOP_PFD_480_PFD0_STABLE_SHIFT)
-#define ANATOP_PFD_480_PFD0_CLKGATE_SHIFT	7
-#define ANATOP_PFD_480_PFD0_CLKGATE_MASK	(1<<ANATOP_PFD_480_PFD0_CLKGATE_SHIFT)
-#define ANATOP_PFD_480_PFD1_FRAC_SHIFT		8
-#define ANATOP_PFD_480_PFD1_FRAC_MASK		(0x3f<<ANATOP_PFD_480_PFD1_FRAC_SHIFT)
-#define ANATOP_PFD_480_PFD1_STABLE_SHIFT	14
-#define ANATOP_PFD_480_PFD1_STABLE_MASK		(1<<ANATOP_PFD_480_PFD1_STABLE_SHIFT)
-#define ANATOP_PFD_480_PFD1_CLKGATE_SHIFT	15
-#define ANATOP_PFD_480_PFD1_CLKGATE_MASK	(0x3f<<ANATOP_PFD_480_PFD1_CLKGATE_SHIFT)
-#define ANATOP_PFD_480_PFD2_FRAC_SHIFT		16
-#define ANATOP_PFD_480_PFD2_FRAC_MASK		(1<<ANATOP_PFD_480_PFD2_FRAC_SHIFT)
-#define ANATOP_PFD_480_PFD2_STABLE_SHIFT	22
-#define ANATOP_PFD_480_PFD2_STABLE_MASK	(1<<ANATOP_PFD_480_PFD2_STABLE_SHIFT)
-#define ANATOP_PFD_480_PFD2_CLKGATE_SHIFT	23
-#define ANATOP_PFD_480_PFD2_CLKGATE_MASK	(0x3f<<ANATOP_PFD_480_PFD2_CLKGATE_SHIFT)
-#define ANATOP_PFD_480_PFD3_FRAC_SHIFT		24
-#define ANATOP_PFD_480_PFD3_FRAC_MASK		(1<<ANATOP_PFD_480_PFD3_FRAC_SHIFT)
-#define ANATOP_PFD_480_PFD3_STABLE_SHIFT	30
-#define ANATOP_PFD_480_PFD3_STABLE_MASK		(1<<ANATOP_PFD_480_PFD3_STABLE_SHIFT)
-#define ANATOP_PFD_480_PFD3_CLKGATE_SHIFT	31
+#define ANATOP_PFD_FRAC_SHIFT(n)	((n)*8)
+#define ANATOP_PFD_FRAC_MASK(n)	(0x3f<<ANATOP_PFD_FRAC_SHIFT(n))
+#define ANATOP_PFD_STABLE_SHIFT(n)	(6+((n)*8))
+#define ANATOP_PFD_STABLE_MASK(n)	(1<<ANATOP_PFD_STABLE_SHIFT(n))
+#define ANATOP_PFD_CLKGATE_SHIFT(n)	(7+((n)*8))
+#define ANATOP_PFD_CLKGATE_MASK(n)	(1<<ANATOP_PFD_CLKGATE_SHIFT(n))
 
 struct iomuxc_base_regs {
 	u32     gpr[14];        /* 0x000 */
