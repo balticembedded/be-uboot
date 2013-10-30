@@ -14,7 +14,9 @@
 
 #define CONFIG_DISPLAY_BOARDINFO
 
-#define CONFIG_MACH_TYPE	MACH_TYPE_MX53_LOCO
+//Custom/random value. Should be careful, that it doesn't ovrelap
+// in future.
+#define CONFIG_MACH_TYPE	5555 
 
 #include <asm/arch/imx-regs.h>
 
