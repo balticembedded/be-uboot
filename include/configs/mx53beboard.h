@@ -14,8 +14,8 @@
 
 #define CONFIG_DISPLAY_BOARDINFO
 
-//Custom/random value. Should be careful, that it doesn't ovrelap
-// in future.
+// Custom/random value. Should be careful, that it doesn't ovrelap
+// in future. NOTE the same number must be registered in kernel.
 #define CONFIG_MACH_TYPE	5555 
 
 #include <asm/arch/imx-regs.h>
@@ -180,7 +180,7 @@
 /* Miscellaneous configurable options */
 #define CONFIG_SYS_LONGHELP		/* undef to save memory */
 #define CONFIG_SYS_HUSH_PARSER		/* use "hush" command parser */
-#define CONFIG_SYS_PROMPT		"BE_MX53_FIRST U-Boot > "
+#define CONFIG_SYS_PROMPT		"MX53_BEBOARD U-Boot > "
 #define CONFIG_AUTO_COMPLETE
 #define CONFIG_SYS_CBSIZE		512	/* Console I/O Buffer Size */
 

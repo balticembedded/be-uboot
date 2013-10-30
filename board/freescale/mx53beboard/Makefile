@@ -9,8 +9,8 @@ include $(TOPDIR)/config.mk
 
 LIB	= $(obj)lib$(BOARD).o
 
-COBJS-y			+= BE_mx53_first.o
-COBJS-$(CONFIG_VIDEO)	+= BE_mx53_first_video.o
+COBJS-y			+= mx53beboard.o
+COBJS-$(CONFIG_VIDEO)	+= mx53beboard_video.o
 
 COBJS	:= $(COBJS-y)
 SRCS	:= $(COBJS:.o=.c)

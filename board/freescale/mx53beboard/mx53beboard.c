@@ -133,7 +133,7 @@ int board_mmc_getcd(struct mmc *mmc)
 	else
 		ret = !gpio_get_value(IMX_GPIO_NR(3, 11));
 
-	ret = !ret; // BE_mx53_first board has this value inversed
+	ret = !ret; // BEBOARD board has this value inversed
 
 	return ret;
 }
@@ -389,7 +389,7 @@ int board_late_init(void)
 
 int checkboard(void)
 {
-	puts("Board: MX53 BalticEmbedded FIRST\n");
+	puts("Board: MX53 BalticEmbedded BEBOARD\n");
 
 	return 0;
 }
