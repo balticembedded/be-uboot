@@ -13,7 +13,16 @@
 	#) add a line in:
 		./boards.cfg
 		
-
+	#) change CONFIG_MACH_TYPE in './include/configs/MYBOARD.h'. 
+	   This is needed in case you have a custom kernel board configuration.
+	   This number determines which kernel configs to load. Seems like there
+	   is no standart naming possible in u-boot unlike it is in kernel. Thats
+	   why we can simply invent a number which doesn't overlap and is defined
+	   in kernel too:
+	   
+		#define CONFIG_MACH_TYPE	5555 
+		
+		
 *) How to compile u-boot
 	#) set up env parameters:
 		$ export ARCH=arm
@@ -31,10 +40,10 @@
 	
 
 *) To update u-boot version from freescale the specific branch must be downloaded
-   and merged into be-patches branch. Because BE_mx53_first board is based on mx53loco,
+   and merged into be-patches branch. Because mx53beboard is based on mx53loco,
    the configuration and board files must be checked if have changed and if have then
    they can be merged using some tool, e.g. :
-   $ meld include/configs/BE_mx53_first.h include/configs/mx53loco.h
+   $ meld include/configs/mx53beboard.h include/configs/mx53loco.h
 
 *) Install freescales u-boot to device:
 	$ sudo dd if=u-boot.imx of=/dev/XXX bs=512 seek=2
@@ -65,7 +74,7 @@
 loads configuration according to that - there is no specific/different kernel for each board. 
 
 -By default imx u-boot booting variables are set to load kernel from first FAT partition, 
-where uImage should be resided, but this really depends on each devicd and u-boot version.
+where uImage should be resided, but this really depends on each device and u-boot version.
 
 
 ================================
@@ -97,15 +106,15 @@ SABRE tablet
 	   
 
 -------------------------
-Baltic Embedded FIRST board
+Baltic Embedded BEBOARD
 -------------------------
 *) Config name
-	BE_mx53_first
+	mx53beboard
 	
 *) Specifics:
 	#) Different RAM size.
 	#) SD connected to different pin, thats why returncode is inverted. ( Thats why cant boot on SABRE from sdcard)
-	#) Based on LOCO u-boot config, so kernel thinks this is LOCO board.
+	#) Has custom MACH_TYPE, so it must exist in kernel too.
 
 
 
