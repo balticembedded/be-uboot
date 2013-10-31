@@ -217,7 +217,6 @@
 
 #define CHIP_REV_1_0                 0x10
 #define IRAM_SIZE                    0x00040000
-#define IMX_IIM_BASE                 OCOTP_BASE_ADDR
 #define FEC_QUIRK_ENET_MAC
 
 #if !(defined(__KERNEL_STRICT_NAMES) || defined(__ASSEMBLY__))
@@ -244,12 +243,6 @@ struct src {
 	u32     gpr8;
 	u32     gpr9;
 	u32     gpr10;
-};
-
-/* OCOTP Registers */
-struct ocotp_regs {
-	u32	reserved[0x198];
-	u32	gp1;	/* 0x660 */
 };
 
 /* GPR3 bitfields */
