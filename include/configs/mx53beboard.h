@@ -115,7 +115,7 @@
 	"mmcdev=0\0" \
 	"mmcpart=1\0" \
 	"mmcroot=/dev/mmcblk0p2 rw rootwait\0" \
-	"mmcargs=setenv bootargs console=ttymxc0,${baudrate} root=${mmcroot}\0" \
+	"mmcargs=setenv bootargs console=ttymxc0,${baudrate} root=${mmcroot} rootflags=data=ordered\0" \
 	"loadbootscript=" \
 		"fatload mmc ${mmcdev}:${mmcpart} ${loadaddr} ${script};\0" \
 	"bootscript=echo Running bootscript from mmc ...; " \
