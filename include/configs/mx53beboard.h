@@ -107,6 +107,7 @@
 
 #define CONFIG_EXTRA_ENV_SETTINGS \
 	"script=boot.scr\0" \
+	"ethaddr 00:1e:ac:00:00:00\0" \
 	"uimage=uImage\0" \
 	"fdt_file=imx53-qsb.dtb\0" \
 	"fdt_addr=0x71000000\0" \
